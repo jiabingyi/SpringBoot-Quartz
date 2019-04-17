@@ -24,9 +24,8 @@ public class DruidManager_TAarrrUser {
         dataSource.setUsername("root");
         dataSource.setPassword("Gm2i9$QT$");
         dataSource.setUrl("jdbc:mysql://10.114.27.179:3306/hello_test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false");
-//        dataSource.setUsername(Config.USER);
-//        dataSource.setPassword(Config.PASSWORD);
-//        dataSource.setUrl(Config.URL);
+//        dataSource.   setUsername(Config.USER);
+//        dataSource.   setPassword(Config.PASSWORD);
 
         dataSource.setInitialSize(5);
         dataSource.setMinIdle(1);
