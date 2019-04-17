@@ -3,6 +3,7 @@ package com.ealen.service;
 import com.ealen.dao.JobEntityRepository;
 import com.ealen.entity.JobEntity;
 import com.ealen.job.DynamicJob;
+import com.ealen.job.FromAndToJob;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,12 +48,18 @@ public class DynamicJobService {
 
     //获取JobDetail,JobDetail是任务的定义,而Job是任务的执行逻辑,JobDetail里会引用一个Job Class来定义
     public JobDetail geJobDetail(JobKey jobKey, String description, JobDataMap map) {
-        return JobBuilder.newJob(DynamicJob.class)
+        return JobBuilder.newJob(FromAndToJob.class)
                 .withIdentity(jobKey)
                 .withDescription(description)
                 .setJobData(map)
                 .storeDurably()
                 .build();
+//        return JobBuilder.newJob(DynamicJob.class)
+//                .withIdentity(jobKey)
+//                .withDescription(description)
+//                .setJobData(map)
+//                .storeDurably()
+//                .build();
     }
 
     //获取Trigger (Job的触发器,执行规则)

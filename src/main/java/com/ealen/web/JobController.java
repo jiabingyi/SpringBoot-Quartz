@@ -1,5 +1,7 @@
 package com.ealen.web;
 
+import com.ealen.entity.Config;
+import com.ealen.entity.ConfigBean;
 import com.ealen.entity.JobEntity;
 import com.ealen.service.DynamicJobService;
 import org.quartz.*;
@@ -7,6 +9,7 @@ import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +29,18 @@ public class JobController {
     private SchedulerFactoryBean schedulerFactoryBean;
     @Autowired
     private DynamicJobService jobService;
+//    @Autowired
+//    private ConfigBean configBean;
 
     //初始化启动所有的Job
     @PostConstruct
     public void initialize() {
         try {
+//            Config.USER=configBean.getUsername();
+//            Config.PASSWORD=configBean.getUsername();
+//            Config.URL=configBean.getUrl();
+
+
             reStartAllJobs();
             logger.info("INIT SUCCESS");
         } catch (SchedulerException e) {
@@ -82,20 +92,21 @@ public class JobController {
      * 重新启动所有的job
      */
     private void reStartAllJobs() throws SchedulerException {
-        synchronized (logger) {                                                         //只允许一个线程进入操作
-            Scheduler scheduler = schedulerFactoryBean.getScheduler();
-            Set<JobKey> set = scheduler.getJobKeys(GroupMatcher.anyGroup());
-            scheduler.pauseJobs(GroupMatcher.anyGroup());                               //暂停所有JOB
+        synchronized (logger) {
+            //只允许一个线程进入操作
+            Scheduler scheduler = schedulerFactoryBean.getScheduler();//通过调度工厂获取调度器
+            Set<JobKey> set = scheduler.getJobKeys(GroupMatcher.anyGroup());//通过调度器,获取每个作业ID
+            scheduler.pauseJobs(GroupMatcher.anyGroup());//通过调度器停止所有的每个分组的job                               //暂停所有JOB
             for (JobKey jobKey : set) {                                                 //删除从数据库中注册的所有JOB
                 scheduler.unscheduleJob(TriggerKey.triggerKey(jobKey.getName(), jobKey.getGroup()));
-                scheduler.deleteJob(jobKey);
+                scheduler.deleteJob(jobKey);//在调度器中，清理所有添加进入的作业
             }
-            for (JobEntity job : jobService.loadJobs()) {                               //从数据库中注册的所有JOB
+            for (JobEntity job : jobService.loadJobs()) {//从数据库中注册的所有JOB，但是没有记录那个Job的执行类
                 logger.info("Job register name : {} , group : {} , cron : {}", job.getName(), job.getGroup(), job.getCron());
-                JobDataMap map = jobService.getJobDataMap(job);
-                JobKey jobKey = jobService.getJobKey(job);
-                JobDetail jobDetail = jobService.geJobDetail(jobKey, job.getDescription(), map);
-                if (job.getStatus().equals("OPEN")) scheduler.scheduleJob(jobDetail, jobService.getTrigger(job));
+                JobDataMap map = jobService.getJobDataMap(job);//job参数封装
+                JobKey jobKey = jobService.getJobKey(job);//job参数封装
+                JobDetail jobDetail = jobService.geJobDetail(jobKey, job.getDescription(), map);//这个作业的所有详细情况都封装到了一个对象中，包括哪一个Job的执行类。
+                if (job.getStatus().equals("OPEN")) scheduler.scheduleJob(jobDetail, jobService.getTrigger(job));//触发一下
                 else
                     logger.info("Job jump name : {} , Because {} status is {}", job.getName(), job.getName(), job.getStatus());
             }

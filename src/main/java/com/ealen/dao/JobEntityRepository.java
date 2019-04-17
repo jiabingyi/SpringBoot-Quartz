@@ -11,3 +11,5 @@ public interface JobEntityRepository extends CrudRepository<JobEntity, Long> {
     JobEntity getById(Integer id);
 
 }
+
+
