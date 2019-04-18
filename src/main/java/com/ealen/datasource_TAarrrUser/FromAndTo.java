@@ -3,6 +3,7 @@ package com.ealen.datasource_TAarrrUser;
 
 import com.ealen.datasource_TAarrrUser.druid_from.From;
 import com.ealen.datasource_TAarrrUser.druid_to.To;
+import com.ealen.entity.Config;
 import com.ealen.entity.TAarrrUser;
 import com.ealen.sendMail.mailutil_ppd.SendMailUtil;
 
@@ -33,6 +34,8 @@ public class FromAndTo {
         } catch (Exception e) {
 //            SendMailUtil.sendMail("今日导数数据量：" + first + "条数据。"+"\n"+e.getMessage());
 //            System.out.println(e.getMessage());
+//            Config.USER=e.getMessage();
+            SendMailUtil.sendMail("3=="+e.getMessage());
             e.printStackTrace();
         } finally {
             SendMailUtil.sendMail("今日导数数据量：" + first + "条数据。");

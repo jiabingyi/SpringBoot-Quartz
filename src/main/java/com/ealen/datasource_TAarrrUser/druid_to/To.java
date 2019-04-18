@@ -2,6 +2,7 @@ package com.ealen.datasource_TAarrrUser.druid_to;
 
 import com.ealen.datasource_TAarrrUser.DruidManager_TAarrrUser;
 import com.ealen.entity.TAarrrUser;
+import com.ealen.sendMail.mailutil_ppd.SendMailUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -62,6 +63,7 @@ public class To {
             ps.executeBatch();
 
         } catch (Exception e) {
+            SendMailUtil.sendMail("2=="+e.getMessage());
             e.printStackTrace();
         }finally{
             // 关闭声明

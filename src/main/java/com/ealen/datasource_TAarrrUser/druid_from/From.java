@@ -4,6 +4,7 @@ package com.ealen.datasource_TAarrrUser.druid_from;
 
 import com.ealen.datasource_TAarrrUser.DruidManager_TAarrrUser;
 import com.ealen.entity.TAarrrUser;
+import com.ealen.sendMail.mailutil_ppd.SendMailUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,6 +54,7 @@ public class From {
                         ,rs.getInt(66)));
           }
         } catch (Exception e) {
+            SendMailUtil.sendMail("1=="+e.getMessage());
             e.printStackTrace();
         }finally{
             // 关闭记录集
