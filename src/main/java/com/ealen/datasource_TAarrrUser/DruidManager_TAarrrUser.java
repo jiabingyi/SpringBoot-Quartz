@@ -1,6 +1,8 @@
 package com.ealen.datasource_TAarrrUser;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.ealen.util.ReadPropertiesUtil;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -19,11 +21,18 @@ public class DruidManager_TAarrrUser {
 
 
     private void initPool() {
+
+
         dataSource = new DruidDataSource();
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUsername("root");
-        dataSource.setPassword("Gm2i9$QT$");
-        dataSource.setUrl("jdbc:mysql://10.114.27.179:3306/hello_test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false");
+
+        String username=ReadPropertiesUtil.get("datasource.taarrruser.username");
+        dataSource.setUsername(username);
+        String password=ReadPropertiesUtil.get("datasource.taarrruser.password");
+        dataSource.setPassword(password);
+        String url=ReadPropertiesUtil.get("datasource.taarrruser.url");
+        dataSource.setUrl(url);
+
 //        dataSource.setUsername("user_app_rtdata");
 //        dataSource.setPassword("IdXnaCF1t-hP");
 //        dataSource.setUrl("jdbc:mysql://rtd.mysql.ppdaidb.com:3423/ppdai_rtdata?useUnicode=true&characterEncoding=utf-8");
