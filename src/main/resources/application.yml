@@ -6,9 +6,18 @@ spring:
   application:
     name: Spring-Quartz-Scheduler                                       #Quartz调度中心
   datasource:
-    url: jdbc:mysql://10.114.27.179:3306/hello_test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
-    username: root
-    password: Gm2i9$QT$
+    #hello_test这个数据库上线的时候要必须修改为生产的数据库，这个库可以是任意存在库。不写springdata就报错。
+#    url: jdbc:mysql://10.114.27.179:3306/hbase?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
+#    username: root
+#    password: Gm2i9$QT$
+    #测试
+#    url: jdbc:mysql://10.114.27.179:3306/hello_test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
+#    username: root
+#    password: Gm2i9$QT$
+    #生产
+    url: jdbc:mysql://rtd.mysql.ppdaidb.com:3423/ppdai_rtdata?useUnicode=true&characterEncoding=utf-8
+    username: user_app_rtdata
+    password: IdXnaCF1t-hP
     tomcat:
       initialSize: 20
       maxActive: 100
@@ -18,8 +27,5 @@ spring:
       testWhileIdle: true
       testOnBorrow: false
       testOnReturn: false
-#datasource.taarrruser.username: root
-#datasource.taarrruser.password: Gm2i9$QT$
-#datasource.taarrruser.url: jdbc:mysql://10.114.27.179:3306/hello_test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
 
 

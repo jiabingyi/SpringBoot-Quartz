@@ -4,6 +4,7 @@ import com.ealen.dao.JobEntityRepository;
 import com.ealen.entity.JobEntity;
 import com.ealen.job.DynamicJob;
 import com.ealen.job.FromAndToJob;
+import com.ealen.util.ReadPropertiesUtil;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +23,33 @@ public class DynamicJobService {
 
     //通过Id获取Job
     public JobEntity getJobEntityById(Integer id) {
-        return repository.getById(id);
+        JobEntity job=new JobEntity();
+        job.setName(ReadPropertiesUtil.get("quartz.job_entity.name"));
+        job.setGroup(ReadPropertiesUtil.get("quartz.job_entity.group"));
+        job.setCron(ReadPropertiesUtil.get("quartz.job_entity.cron"));
+        job.setParameter(ReadPropertiesUtil.get("quartz.job_entity.parameter"));
+        job.setDescription(ReadPropertiesUtil.get("quartz.job_entity.description"));
+        job.setDescription(ReadPropertiesUtil.get("quartz.job_entity.vm_param"));
+        job.setDescription(ReadPropertiesUtil.get("quartz.job_entity.jar_path"));
+        job.setStatus(ReadPropertiesUtil.get("quartz.job_entity.status"));
+        return  job;
+//        return repository.getById(id);
     }
 
     //从数据库中加载获取到所有Job
     public List<JobEntity> loadJobs() {
         List<JobEntity> list = new ArrayList<>();
-        repository.findAll().forEach(list::add);
+        JobEntity job=new JobEntity();
+        job.setName(ReadPropertiesUtil.get("quartz.job_entity.name"));
+        job.setGroup(ReadPropertiesUtil.get("quartz.job_entity.group"));
+        job.setCron(ReadPropertiesUtil.get("quartz.job_entity.cron"));
+        job.setParameter(ReadPropertiesUtil.get("quartz.job_entity.parameter"));
+        job.setDescription(ReadPropertiesUtil.get("quartz.job_entity.description"));
+        job.setDescription(ReadPropertiesUtil.get("quartz.job_entity.vm_param"));
+        job.setDescription(ReadPropertiesUtil.get("quartz.job_entity.jar_path"));
+        job.setStatus(ReadPropertiesUtil.get("quartz.job_entity.status"));
+        list.add(job);
+//        repository.findAll().forEach(list::add);
         return list;
     }
 
